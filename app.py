@@ -33,6 +33,17 @@ def add_post():
     new()
     return redirect(url_for('landing_page'))
 
+@app.route('/edit_post/<id>', methods=['POST'])
+def edit_post(id):
+
+    update(id)
+    return redirect(url_for('landing_page'))
+
+@app.route('/delete_post/<id>')
+def remove_one(id):
+    
+    delete(id)
+    return redirect(url_for('landing_page'))
 
 @app.route('/remove_all')
 def remove_all():
@@ -49,6 +60,8 @@ def remove_all():
 def get_all_posts():
     
     _posts = db.blogpostDB.find()
+    print 'count'
+    print _posts.count()
     posts = [post for post in _posts]
     return JSONEncoder().encode(posts)
 
@@ -70,7 +83,37 @@ def new():
 
 ### Insert function here ###
 
+@app.route('/update/<id>', methods=['POST'])
+def update(id):
+        
+    db.blogpostDB.update_one(
+            {
+                '_id': ObjectId(id)
+            }, 
+            {
+                '$set': {
+                    'title': request.form['title'],
+                    'post': request.form['post']
+                }
+            }, upsert=False)
 
+    _posts = db.blogpostDB.find()
+    posts = [post for post in _posts]
+
+    return JSONEncoder().encode(posts[-1])
+
+@app.route('/delete/<id>', methods=['GET'])
+def delete(id):
+        
+    db.blogpostDB.delete_one({'_id': ObjectId(id)})
+
+    _posts = db.blogpostDB.find()
+    posts = [post for post in _posts]
+
+    if len(posts) > 0:
+        return JSONEncoder().encode(posts[-1])
+    else:
+        return []
 
 ############################
 
