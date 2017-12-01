@@ -17,19 +17,19 @@ h1, h2, h3, h4, h5{
   margin-top: 20px;
 }
 
-#input-title{
+#input-title, .edit-input-title{
   width: 100%;
   font-size: 19px;
   padding: 3px;
 }
 
-#input-post{
+#input-post, .edit-input-post{
   width: 100%;
   font-size: 12px;
   padding: 10px;
 }
 
-#input-submit{
+#input-submit, .edit-input-submit{
     width: 100px;
     font-size: 50px;
 }
